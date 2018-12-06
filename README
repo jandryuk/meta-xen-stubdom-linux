@@ -1,0 +1,38 @@
+OE layer to build a Xen linux stubdom
+
+Had to install liblzma-dev onto my ubuntu build host to build meta-virt ipxe -
+it must be building with host tools.
+
+Setup repos:
+git clone -b thud git://git.openembedded.org/openembedded-core oe-core
+cd oe-core
+git clone git://git.openembedded.org/bitbake bitbake
+git clone -b thud git://git.openembedded.org/meta-openembedded
+git clone -b thud git://git.yoctoproject.org/meta-security
+git clone -b master https://git.yoctoproject.org/git/meta-virtualization
+
+meta-virt provides xen
+meta-security provides libseccomp
+
+set BBLAYERS in build/conf/bblayers.conf to
+BBLAYERS ?= " \
+  /home/jason/oe-core/meta \
+  /home/jason/oe-core/meta-openembedded/meta-oe \
+  /home/jason/oe-core/meta-openembedded/meta-filesystems \
+  /home/jason/oe-core/meta-xen-stubdom-linux \
+  /home/jason/oe-core/meta-security \
+  /home/jason/oe-core/meta-openembedded/meta-python \
+  /home/jason/oe-core/meta-openembedded/meta-networking \
+  /home/jason/oe-core/meta-openembedded/meta-perl \
+  /home/jason/oe-core/meta-virtualization \
+  "
+
+Build: (in oe-core)
+```
+# Source OE build environment
+. oe-init-build-env
+# Implicitly `cd`-ed into build
+DISTRO=stubdom MACHINE=xen-stubdom bitbake stubdom-initramfs-qubes
+# Output here
+ls tmp-glibc/deploy/images/xen-stubdom/
+```
