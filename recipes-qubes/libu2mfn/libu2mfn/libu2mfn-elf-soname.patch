@@ -1,0 +1,13 @@
+diff --git a/u2mfn/Makefile b/u2mfn/Makefile
+index 9f08dcc..86cc4da 100644
+--- a/u2mfn/Makefile
++++ b/u2mfn/Makefile
+@@ -24,7 +24,7 @@ CFLAGS=-g -Wall
+ all: libu2mfn.so
+ 
+ libu2mfn.so : u2mfnlib.o
+-	gcc -shared -o libu2mfn.so u2mfnlib.o
++	gcc -shared -Wl,-soname,libu2mfn.so.1 -o libu2mfn.so u2mfnlib.o
+ u2mfnlib.o: u2mfnlib.c
+ 	gcc -fPIC -Wall -g -c u2mfnlib.c
+ clean:
