@@ -1,0 +1,23 @@
+diff --git a/Makefile.objs b/Makefile.objs
+index 2600739..ebd414d 100644
+--- a/gui-agent/Makefile.objs
++++ b/gui-agent/Makefile.objs
+@@ -1,5 +1,5 @@
+ QUBES_GUI_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+ 
+-QUBES_GUI_CFLAGS := -I/usr/include $(shell pkg-config --cflags vchan-xen) -I$(QUBES_GUI_DIR)/include
++QUBES_GUI_CFLAGS := $(shell pkg-config --cflags xenvchan) -I$(QUBES_GUI_DIR)/include
+ 
+ common-obj-y += gui-agent-qemu/ gui-common/
+diff --git a/gui-agent-qemu/Makefile.objs b/gui-agent-qemu/Makefile.objs
+index 24c8e3e..99324f3 100644
+--- a/gui-agent/gui-agent-qemu/Makefile.objs
++++ b/gui-agent/gui-agent-qemu/Makefile.objs
+@@ -1,6 +1,6 @@
+ common-obj-y += qubes-gui.o
+ qubes-gui.o-cflags += $(QUBES_GUI_CFLAGS)
+-qubes-gui.o-libs += $(shell pkg-config --libs vchan-xen) -lu2mfn
++qubes-gui.o-libs += $(shell pkg-config --libs xenvchan) -lu2mfn
+ 
+ GENERATED_FILES += $(QUBES_GUI_DIR)/gui-agent-qemu/qubes-keycode2scancode.c
+ 

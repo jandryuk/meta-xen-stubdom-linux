@@ -1,0 +1,57 @@
+--- a/hw/xen/xen_pt.c
++++ b/hw/xen/xen_pt.c
+@@ -790,6 +790,10 @@ static void xen_pt_realize(PCIDevice *d,
+         return;
+     }
+ 
++    if (!xen_stubdom_enable()) {
++        s->machine_addr = s->hostaddr;
++    }
++
+     s->is_virtfn = s->real_device.is_virtfn;
+     if (s->is_virtfn) {
+         XEN_PT_LOG(d, "%04x:%02x:%02x.%d is a SR-IOV Virtual Function\n",
+@@ -804,8 +808,8 @@ static void xen_pt_realize(PCIDevice *d,
+     s->io_listener = xen_pt_io_listener;
+ 
+     /* Setup VGA bios for passthrough GFX */
+-    if ((s->real_device.domain == 0) && (s->real_device.bus == 0) &&
+-        (s->real_device.dev == 2) && (s->real_device.func == 0)) {
++    if ((s->machine_addr.domain == 0) && (s->machine_addr.bus == 0) &&
++        (s->machine_addr.slot == 2) && (s->machine_addr.function == 0)) {
+         if (!is_igd_vga_passthrough(&s->real_device)) {
+             error_setg(errp, "Need to enable igd-passthru if you're trying"
+                     " to passthrough IGD GFX");
+@@ -936,6 +940,7 @@ static void xen_pt_unregister_device(PCI
+ 
+ static Property xen_pci_passthrough_properties[] = {
+     DEFINE_PROP_PCI_HOST_DEVADDR("hostaddr", XenPCIPassthroughState, hostaddr),
++    DEFINE_PROP_PCI_HOST_DEVADDR("machine_addr", XenPCIPassthroughState, machine_addr),
+     DEFINE_PROP_BOOL("permissive", XenPCIPassthroughState, permissive, false),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+--- a/hw/xen/xen_pt.h
++++ b/hw/xen/xen_pt.h
+@@ -210,6 +210,7 @@ struct XenPCIPassthroughState {
+     PCIDevice dev;
+ 
+     PCIHostDeviceAddress hostaddr;
++    PCIHostDeviceAddress machine_addr;
+     bool is_virtfn;
+     bool permissive;
+     bool permissive_warned;
+--- a/hw/xen/xen_pt_msi.c
++++ b/hw/xen/xen_pt_msi.c
+@@ -135,9 +135,9 @@ static int msi_msix_setup(XenPCIPassthro
+         }
+ 
+         rc = xc_physdev_map_pirq_msi(xen_xc, xen_domid, XEN_PT_AUTO_ASSIGN,
+-                                     ppirq, PCI_DEVFN(s->real_device.dev,
+-                                                      s->real_device.func),
+-                                     s->real_device.bus,
++                                     ppirq, PCI_DEVFN(s->machine_addr.slot,
++                                                      s->machine_addr.function),
++                                     s->machine_addr.bus,
+                                      msix_entry, table_base);
+         if (rc) {
+             XEN_PT_ERR(&s->dev,

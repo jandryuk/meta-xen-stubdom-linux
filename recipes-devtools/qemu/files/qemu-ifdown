@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo "$0 $*"
+
+echo vif-0 > /sys/bus/xen/drivers/vif/unbind
+xenstore-rm device/vif/0

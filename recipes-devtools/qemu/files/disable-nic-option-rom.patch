@@ -1,0 +1,20 @@
+--- a/hw/net/rtl8139.c
++++ b/hw/net/rtl8139.c
+@@ -3472,7 +3472,6 @@ static void rtl8139_class_init(ObjectCla
+ 
+     k->realize = pci_rtl8139_realize;
+     k->exit = pci_rtl8139_uninit;
+-    k->romfile = "efi-rtl8139.rom";
+     k->vendor_id = PCI_VENDOR_ID_REALTEK;
+     k->device_id = PCI_DEVICE_ID_REALTEK_8139;
+     k->revision = RTL8139_PCI_REVID; /* >=0x20 is for 8139C+ */
+--- a/hw/net/e1000.c
++++ b/hw/net/e1000.c
+@@ -1659,7 +1659,6 @@ static void e1000_class_init(ObjectClass
+ 
+     k->realize = pci_e1000_realize;
+     k->exit = pci_e1000_uninit;
+-    k->romfile = "efi-e1000.rom";
+     k->vendor_id = PCI_VENDOR_ID_INTEL;
+     k->device_id = info->device_id;
+     k->revision = info->revision;

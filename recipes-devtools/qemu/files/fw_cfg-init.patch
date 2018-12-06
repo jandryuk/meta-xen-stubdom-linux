@@ -1,0 +1,18 @@
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -181,6 +181,15 @@ static void pc_init1(MachineState *machi
+     } else if (machine->kernel_filename != NULL) {
+         /* For xen HVM direct kernel boot, load linux here */
+         xen_load_linux(pcms);
++    } else {
++        pcmc->has_acpi_build = false;
++
++        FWCfgState *fw_cfg;
++
++        fw_cfg = fw_cfg_init_io(FW_CFG_IO_BASE);
++        rom_set_fw(fw_cfg);
++
++        pcms->fw_cfg = fw_cfg;
+     }
+ 
+     gsi_state = g_malloc0(sizeof(*gsi_state));
