@@ -36,3 +36,11 @@ DISTRO=stubdom MACHINE=xen-stubdom bitbake stubdom-initramfs-qubes
 # Output here
 ls tmp-glibc/deploy/images/xen-stubdom/
 ```
+
+TODO
+Switch to MUSL?
+Remove bash
+Trim down busybox
+QEMU shrink?
+Remove QEMU keymaps?
+Install QEMU vgabios-cirrus, vgabios-stdvga & linuxboot.bin
