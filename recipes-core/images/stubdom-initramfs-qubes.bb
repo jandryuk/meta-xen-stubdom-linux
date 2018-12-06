@@ -10,5 +10,4 @@ IMAGE_INSTALL += " \
     xen-xenstore \
     busybox \
     initramfs-boot \
-    inotify-tools \
 "
