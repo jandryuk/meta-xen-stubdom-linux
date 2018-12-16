@@ -39,7 +39,6 @@ ls tmp-glibc/deploy/images/xen-stubdom/
 
 TODO
 Switch to MUSL?
-Remove bash
 Trim down busybox
 QEMU shrink?
 Remove QEMU keymaps?
