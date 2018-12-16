@@ -23,6 +23,8 @@ SRC_URI_append_class-target_stubdom += " \
 SRCREV_gui-agent_pn-qemu = "007a47e59dd2d09d93c0cde111b749a2eabe1dd2"
 
 DEPENDS_class-target_stubdom += "libu2mfn xen libvchan-xen"
+# I don't know why qemu.inc adds bash to class-target...
+RDEPENDS_${PN}_class-target_stubdom_remove = "bash"
 
 PACKAGECONFIG_class-target_stubdom = "xen seccomp"
 PACKAGECONFIG_class-native = "fdt kvm"

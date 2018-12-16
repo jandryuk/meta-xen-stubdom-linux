@@ -16,15 +16,15 @@ meta-security provides libseccomp
 
 set BBLAYERS in build/conf/bblayers.conf to
 BBLAYERS ?= " \
-  /home/jason/oe-core/meta \
-  /home/jason/oe-core/meta-openembedded/meta-oe \
-  /home/jason/oe-core/meta-openembedded/meta-filesystems \
-  /home/jason/oe-core/meta-xen-stubdom-linux \
-  /home/jason/oe-core/meta-security \
-  /home/jason/oe-core/meta-openembedded/meta-python \
-  /home/jason/oe-core/meta-openembedded/meta-networking \
-  /home/jason/oe-core/meta-openembedded/meta-perl \
-  /home/jason/oe-core/meta-virtualization \
+  ${TOPDIR}/../meta \
+  ${TOPDIR}/../meta-openembedded/meta-oe \
+  ${TOPDIR}/../meta-openembedded/meta-filesystems \
+  ${TOPDIR}/../meta-openembedded/meta-python \
+  ${TOPDIR}/../meta-openembedded/meta-networking \
+  ${TOPDIR}/../meta-openembedded/meta-perl \
+  ${TOPDIR}/../meta-virtualization \
+  ${TOPDIR}/../meta-xen-stubdom-linux \
+  ${TOPDIR}/../meta-security \
   "
 
 Build: (in oe-core)
@@ -36,3 +36,11 @@ DISTRO=stubdom MACHINE=xen-stubdom bitbake stubdom-initramfs-qubes
 # Output here
 ls tmp-glibc/deploy/images/xen-stubdom/
 ```
+
+TODO
+Switch to MUSL?
+Remove bash
+Trim down busybox
+QEMU shrink?
+Remove QEMU keymaps?
+Install QEMU vgabios-cirrus, vgabios-stdvga & linuxboot.bin
