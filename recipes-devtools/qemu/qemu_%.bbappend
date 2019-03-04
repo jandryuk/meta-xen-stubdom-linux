@@ -138,4 +138,7 @@ do_install_append_class-target_stubdom() {
     install -d ${D}${datadir}/qemu-firmware
     ln -s ../firmware/vgabios-0.7a.bin ${D}${datadir}/qemu-firmware/vgabios-stdvga.bin
     ln -s ../firmware/vgabios-0.7a.cirrus.bin ${D}${datadir}/qemu-firmware/vgabios-cirrus.bin
+
+    # Qubes needs this for direct kernel boot.
+    install -m 0644 pc-bios/linuxboot.bin ${D}${datadir}/qemu-firmware
 }
