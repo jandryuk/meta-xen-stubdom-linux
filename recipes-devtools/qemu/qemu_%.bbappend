@@ -26,6 +26,8 @@ DEPENDS_class-target_stubdom += "libu2mfn xen libvchan-xen"
 # I don't know why qemu.inc adds bash to class-target...
 RDEPENDS_${PN}_class-target_stubdom_remove = "bash"
 
+RDEPENDS_${PN}_class-target_stubdom_append = "vgabios"
+
 PACKAGECONFIG_class-target_stubdom = "xen seccomp"
 PACKAGECONFIG_class-native = "fdt kvm"
 
@@ -123,8 +125,20 @@ do_configure_prepend_class-target_stubdom() {
     cp ${WORKDIR}/qubes-gui-protocol.h ${S}/gui-agent/include/
 }
 
+FILES_${PN}_append_class-target_stubdom += " \
+    ${datadir}/qemu-firmware \
+"
+
 do_install_append_class-target_stubdom() {
     install -d ${D}${sysconfdir}
     install -m 0755 ${WORKDIR}/qemu-ifup ${D}${sysconfdir}/
     install -m 0755 ${WORKDIR}/qemu-ifdown ${D}${sysconfdir}/
+
+    #Install compatibility symlinks to vgabios filenames
+    install -d ${D}${datadir}/qemu-firmware
+    ln -s ../firmware/vgabios-0.7a.bin ${D}${datadir}/qemu-firmware/vgabios-stdvga.bin
+    ln -s ../firmware/vgabios-0.7a.cirrus.bin ${D}${datadir}/qemu-firmware/vgabios-cirrus.bin
+
+    # Qubes needs this for direct kernel boot.
+    install -m 0644 pc-bios/linuxboot.bin ${D}${datadir}/qemu-firmware
 }
